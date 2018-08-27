@@ -6,8 +6,19 @@ import PropTypes from 'prop-types';
 import _ from './utils';
 import Cell from './cell';
 import eventDelegater from './row-event-delegater';
+import shouldRowUpdater from './row-should-updater';
 
-class Row extends eventDelegater(Component) {
+class Row extends shouldRowUpdater(eventDelegater(Component)) {
+  shouldComponentUpdate(nextProps) {
+    const shouldUpdate =
+      nextProps.shouldUpdate ||
+      this.shouldUpdateByCellEditing(nextProps) ||
+      this.shouldUpdatedByNormalProps(nextProps);
+
+    console.log(shouldUpdate);
+    return shouldUpdate;
+  }
+
   render() {
     const {
       row,
@@ -108,14 +119,16 @@ Row.propTypes = {
   columns: PropTypes.array.isRequired,
   style: PropTypes.object,
   className: PropTypes.string,
-  attrs: PropTypes.object
+  attrs: PropTypes.object,
+  shouldUpdate: PropTypes.bool
 };
 
 Row.defaultProps = {
   editable: true,
   style: {},
   className: null,
-  attrs: {}
+  attrs: {},
+  shouldUpdate: false
 };
 
 export default Row;

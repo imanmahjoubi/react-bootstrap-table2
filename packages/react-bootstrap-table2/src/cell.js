@@ -11,6 +11,7 @@ class Cell extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
+    console.log('cell checking');
     const shouldUpdate =
       _.get(this.props.row, this.props.column.dataField)
         !== _.get(nextProps.row, nextProps.column.dataField) ||
